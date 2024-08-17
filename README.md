@@ -71,7 +71,58 @@ This shell script automates the creation of a basic web project structure, initi
 6. Copy the generated token and replace the placeholder in the script (`github_token="your_token_here"`) with this value.
     
 
-> **Important:** Keep your token secure and never share it. If it gets exposed, revoke it immediately and create a new one.    
+> **Important:** Keep your token secure and never share it. If it gets exposed, revoke it immediately and create a new one. 
+
+## Run the script from anywhere
+
+1. **Choose a Directory in Your `PATH`**: Common choices are `/usr/local/bin` or `~/bin` (if `~/bin` exists and is included in your `PATH`).
+    
+2. **Move the Script**:
+    
+    `sudo mv script_name.sh /usr/local/bin/`
+    
+    Or, if using a local `bin` directory:
+    
+    `mv script_name.sh ~/bin/`
+    
+3. **Rename the Script (Optional)**: If you'd like to run the script using a simpler name, you can rename it during the move:
+    
+    `sudo mv script_name.sh /usr/local/bin/project-setup`
+    
+    Now, you can run it from any directory with:
+    
+    `project-setup`
+    
+
+### 2. Make Sure the Script is Executable
+
+Ensure the script has execute permissions:
+
+`chmod +x /usr/local/bin/script_name.sh`
+
+Or, if using the local `bin` directory:
+
+`chmod +x ~/bin/script_name.sh`
+
+### 3. Add Local Bin to `PATH` (If Necessary)
+
+If you moved the script to `~/bin` and it’s not already in your `PATH`, you can add it by editing your `.bashrc`, `.bash_profile`, or `.zshrc` (depending on your shell):
+
+`echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc`
+
+Then, reload your shell configuration:
+
+`source ~/.bashrc`
+
+### 4. Running the Script
+
+You can now run the script from any directory by typing its name:
+
+`script_name.sh`
+
+Or, if you renamed it:
+
+`project-setup`
 
 ## Notes
 
