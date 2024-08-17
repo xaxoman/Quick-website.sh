@@ -35,7 +35,7 @@ cat <<EOL > index.html
 </head>
 <body>
     
-    <script src="script.js" ></script>
+    <script src="script.js"></script>
 </body>
 </html>
 EOL
@@ -55,15 +55,19 @@ if [ "$create_repo" == "y" ]; then
     while true; do
         echo "Do you want the repository to be public or private? (public/private)"
         read repo_visibility
-        if [ "$repo_visibility" == "public" ]; then
-            private_flag=false
-            break
-        elif [ "$repo_visibility" == "private" ]; then
-            private_flag=true
-            break
-        else
-            echo "Invalid input. Please enter 'public' or 'private'."
-        fi
+        case $repo_visibility in
+            public)
+                private_flag=false
+                break
+                ;;
+            private)
+                private_flag=true
+                break
+                ;;
+            *)
+                echo "Invalid input. Please enter 'public' or 'private'."
+                ;;
+        esac
     done
 
     # Create the repository using the GitHub API
@@ -75,17 +79,32 @@ if [ "$create_repo" == "y" ]; then
     # Initialize a new Git repository
     git init
 
+    # Configure Git user if not set
+    if ! git config user.name &>/dev/null; then
+        echo "Please configure your Git username:"
+        read git_username
+        git config --global user.name "$git_username"
+    fi
+
+    if ! git config user.email &>/dev/null; then
+        echo "Please configure your Git email:"
+        read git_email
+        git config --global user.email "$git_email"
+    fi
+
+    # Rename the default branch to main
+    git branch -M main
+
     # Add all files to the repository
     git add .
 
     # Commit the files
     git commit -m "Initial commit"
 
-    # Add the remote GitHub repository
-    git remote add origin https://github.com/$github_username/$repo_name.git
+    # Add the remote GitHub repository with Personal Access Token for HTTPS
+    git remote add origin https://$github_token@github.com/$github_username/$repo_name.git
 
     # Push the code to GitHub
-    git branch -M main
     git push -u origin main
 
     echo "Repository '$repo_name' created and pushed to GitHub under username '$github_username'."
